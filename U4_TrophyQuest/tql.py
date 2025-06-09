@@ -1,5 +1,5 @@
 import random
-
+#TODO: Refactor. I managed to get "one" loop going, but had not realized while pre-planning how to construct it, so that i get 10 loops. 
 
 # Functions
 def welcome_user():
@@ -40,42 +40,87 @@ def ask_times_table():
 [   Enter a number from 2 to 9   ]:'''
     print(times_table_prompt)
 
-    users_table_choice = validate_input(get_user_input())
+    users_table_input = validate_input(get_user_input())
+    user_table_valid_input = 0
 
-    if users_table_choice <2 or users_table_choice >9:
+    if users_table_input <2 or users_table_input >9:
         print_warning()
         linebreak(1)
-        ask_times_table()
+        return ask_times_table()
     else:
         print_affirm()
-        print("You chose the " + str(users_table_choice) + " times table.")
+        print("You chose the " + str(users_table_input) + " times table.")
         linebreak(1)
-    return int(users_table_choice)
-
-def main_game_loop(times_table):
+        user_table_valid_input = users_table_input
+    return user_table_valid_input
     
-
-    pass
-
 def experience_bar():
+    print("The apprentice")
     print("[----------]")
 
 # Helpers
+def check_user_result(result, question):
+    experience_bar()
+
+    is_not_correct_answer = False
+    while is_not_correct_answer == False:
+        wrong_answer = validate_input(get_user_input()) != result
+        if wrong_answer:
+            print_negation()
+            linebreak(1)
+            experience_bar()
+            print(question)
+        else:
+            is_not_correct_answer = True
+            print_affirm()
+            linebreak(1)
+            break
+
+
 def create_times_table_problem(user_value):
     rand_num = random.randint(2,9)
+    picked_num = rand_num
 
-    result = user_value * rand_num
-    print("What is " + str(user_value) + " times " + str(rand_num) + " ?")
-    while validate_input(get_user_input()) != result:
-        print("Try again!")
-        
+    result = user_value * picked_num
+    question = return_times_table_question(user_value, picked_num)
+    print(question)
 
+    check_user_result(result, question)
+
+def return_times_table_question(user_value, picked_num):
+    return "What is " + str(user_value) + " times " + str(picked_num) + " ?"
 
 def validate_input(users_table_choice):
     if users_table_choice.isdigit():
         return int(users_table_choice)
     else:
         return ord(users_table_choice[0])
+
+def print_negation():
+    '''
+    Prints a random denial string.
+    Example: 'Try again!', 'Close!!", or 'Almost had it!'
+    '''
+
+    rand_num = random.randint(1,7)
+    denial = ""
+
+    if rand_num == 1:
+        denial = "Try again!"
+    elif rand_num == 2:
+        denial = "Close!"
+    elif rand_num == 3:
+        denial = "Almost!"
+    elif rand_num == 4:
+        denial = "Think again!"
+    elif rand_num == 5:
+        denial = "One more try!"
+    elif rand_num == 6:
+        denial = "Not quite!"
+    else:
+        denial = "Are you sure?"
+    print(denial)
+    pass
 
 def print_warning():
     '''
@@ -101,9 +146,6 @@ def print_warning():
     else:
         affirm = "Do not!"
     print(affirm)
-
-def get_user_input():
-    return input("You: ")
 
 def print_prompt():
     '''
@@ -150,6 +192,9 @@ def print_affirm():
     else:
         affirm = "Resplendent!"
     print(affirm)
+
+def get_user_input():
+    return input("You: ")
 
 def linebreak(number):
     '''

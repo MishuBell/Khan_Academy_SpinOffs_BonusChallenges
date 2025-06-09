@@ -8,5 +8,6 @@ tql.ready_check()
 
 times_table_choice = tql.ask_times_table()
 
-tql.create_times_table_problem(times_table_choice)
+result = tql.create_times_table_problem(times_table_choice)
+
 
