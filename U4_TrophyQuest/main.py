@@ -11,3 +11,11 @@ times_table_choice = tql.ask_times_table()
 result = tql.create_times_table_problem(times_table_choice)
 
 
+# def game():
+#     start()
+
+#     while (running)
+
+#     end()
+
+

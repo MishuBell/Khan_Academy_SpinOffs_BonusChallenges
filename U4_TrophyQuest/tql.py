@@ -76,7 +76,6 @@ def check_user_result(result, question):
             linebreak(1)
             break
 
-
 def create_times_table_problem(user_value):
     rand_num = random.randint(2,9)
     picked_num = rand_num
