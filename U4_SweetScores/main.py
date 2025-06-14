@@ -6,31 +6,55 @@ deck = ['kiwi', 'apple', 'apple', 'orange', 'banana','apple', 'fruit fly', 'pois
 def main():
     rounds = 0
     max_rounds = 5
-
+    user_score = 0
+    npc_score = 0
     print(welcome_user())
+
     while rounds < max_rounds:
+        linebreak(2)
         rounds_progress(rounds, max_rounds)
 
+        # Player
         hand = build_hand()
-        display_hand_score(hand)
+        
         hand = discard_cards(hand, True)
-        display_hand_score(hand)
-        user_score = evaluate_hand(hand)
-        display_hand_score(hand)
-        # User Score
+        user_hand_score = evaluate_hand(hand)
+        # Endplayer
 
+
+        # NPC
         npc_hand = build_hand()
+
         npc_hand = discard_cards(npc_hand, False)
-        npc_score = evaluate_hand(npc_hand)
-        # NPC Score
+        npc_hand_score = evaluate_hand(npc_hand)
+        # Endnpc
 
-        if user_score > npc_score:
+        # Totals
+        user_score += user_hand_score
+        npc_score += npc_hand_score
+        # Endtotals
+
+
+        print(display_hand_score(hand, True))
+        print(display_hand_score(npc_hand, False))
+        if user_hand_score > npc_hand_score:
             print("You've won the round!")
-        else:
+        elif npc_hand_score > user_hand_score:
             print("NPC won the round.")
-
+        else:
+            print("Its a draw!")
+            rounds -= 1
         rounds += 1
-
+    
+    if max_rounds == 5:
+        linebreak(2)
+        if user_score > npc_score:
+            print("You've won the game!!!!")
+        elif npc_score > user_score:
+            print("NPC won the game ):")
+        else:
+            print("No one won the game. Its a draw")
+        pass
 # Helpers
 def build_hand():
     hand = []
@@ -41,28 +65,55 @@ def build_hand():
     return hand
 
 def discard_cards(hand, player):
-    
+    """
+    Allows the player or NPC to discard cards from their hand until only 4 remain.
+
+    Parameters:
+        hand (list): The list of cards currently in the hand.
+        player (bool): True if the user is discarding, False if the NPC is discarding.
+
+    Returns:
+        list: The updated hand after discarding cards.
+    """
     # print(hand) 
     if player == True:
         while len(hand) >= 5:
-            # print discard instruction
             display_hand(hand)
-            index = int(input())
+            print(display_hand_score(hand, True))
+            index = int(input("Discard:"))
+            linebreak(1)
             hand.pop(index - 1)
     else:
         while len(hand) >= 5:
             index = random.randint(1, len(hand))
             hand.pop(index - 1)
-            # DEBUG ONLY: Print NPC hand
     return hand
 
 def evaluate_hand(hand):
+    """
+    Calculates the total score for a hand of cards.
+
+    Parameters:
+        hand (list): A list of card names (str) in the hand.
+
+    Returns:
+        int: The total score for the hand.
+    """
     score = 0
     for card in hand:
         score += evaluate_card(card)
     return score
 
 def evaluate_card(card):
+    """
+    Returns the score value for a single card.
+
+    Parameters:
+        card (str): The name of the card to evaluate.
+
+    Returns:
+        int: The score associated with the card.
+    """
     score = 0
     if card == "apple":
         score += 1
@@ -87,15 +138,56 @@ But watch out! Some cards have special effects!
     return welcome_text
 
 def rounds_progress(round, max_rounds):
+    """
+    Displays a progress bar indicating the current round out of the total rounds.
+
+    Parameters:
+        current_round (int): The current round number (starting from 1).
+        max_rounds (int): The total number of rounds in the game.
+
+    Returns:
+        None
+    """
     filled = '#' * round
     empty = '-' * (max_rounds - round)
     print( f"Round: [{filled}{empty}]")  
 
 def display_hand(hand):
+    """
+    Displays the cards of the given hand.
+
+    Parameters:
+        hand (list): The list of cards in a given hand.
+    Returns:
+        None
+    """
     for i in range(len(hand)):
         print(str(i + 1) + ": " + hand[i])
 
-def display_hand_score(hand):
-    print("Your hand is valued at: " + str(evaluate_hand(hand)))
+
+def display_hand_score(hand, player):
+    """
+    Returns the total score of the given hand.
+
+    Parameters:
+        hand (list): The list of cards in a given hand.
+        player (bool): True if the hand belongs to the user, False for NPC.
+
+    Returns:
+        The score text
+    """
+    score_text = ""
+    if player == True:
+        score_text = "Your hand is valued at: " + str(evaluate_hand(hand))
+    else:
+        score_text = "The NPC hand is valued at: " + str(evaluate_hand(hand))
+    return score_text
+
+def linebreak(number):
+    '''
+    Prints a specified number of linebreaks
+    '''
+    for linebreak in range(number):
+        print()
 
 main()
