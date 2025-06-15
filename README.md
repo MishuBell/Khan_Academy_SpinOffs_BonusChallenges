@@ -6,4 +6,4 @@ I’m tackling them one by one, following the iterative coding process: **Plan �
 🙂
 
 ## Links  
-https://www.khanacademy.org/computing/intro-to-python-fundamentals
+www.khanacademy.org/computing/intro-to-python-fundamentals
