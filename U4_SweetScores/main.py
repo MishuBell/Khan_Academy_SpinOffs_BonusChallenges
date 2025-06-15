@@ -1,5 +1,4 @@
 import random
-#TODO: Sanitize Inputs
 
 deck = ['apple', 'banana', 'orange', 'cherry', 'dragonfruit','prickly pear', 'golden kiwi', 'acerola', 'fruit fly swarm', 'deadly nightshade', 'blood orange', 'starfruit', 'peach leaf curl', 'penicillium fungi']
 
@@ -52,12 +51,16 @@ def main():
         if user_score > npc_score:
             print(f"You total {user_score} against their {npc_score}")
             print("You've won the game!!!!")
+            print("Thank you for playing!!")
         elif npc_score > user_score:
             print(f"NPC totals {npc_score} against your {user_score}")
             print("NPC won the game ):")
+            print("Thank you for playing!!")
+
         else:
             print("No one won the game. Its a draw")
-        pass
+            print("Thank you for playing!!")
+
 # Helpers
 def build_hand():
     hand = []
@@ -85,6 +88,9 @@ def discard_cards(hand, player):
             print(display_hand_score(hand, True))
             index = int(input("Discard:"))
             linebreak(1)
+            if index < 1 or index > len(hand):
+                print("The card you chose is out of index!")
+                return discard_cards(hand, player)
             hand.pop(index - 1)
     else:
         while len(hand) >= 5:
@@ -109,18 +115,17 @@ def evaluate_hand(hand):
 
 def evaluate_card(card):
     """
-    Returns the score value for a single card based on its name.
+    Returns a score value for a single card based on its name.
+    (Values are placeholders for demonstration.)
 
     Parameters:
         card (str): The name of the card to evaluate.
-    
+
     Returns:
         int: The score associated with the card.
     """
-    score = 0
     if card == "apple":
         score = 1
-        pass
     elif card == "banana":
         score = 2
     elif card == "orange":
@@ -128,44 +133,33 @@ def evaluate_card(card):
     elif card == "cherry":
         score = 4
     elif card == "dragonfruit":
-        # TODO: Add scoring logic for dragonfruit
-        pass
+        score = -2
     elif card == "prickly pear":
-        # TODO: Add scoring logic for prickly pear
-        pass
+        score = 5
     elif card == "golden kiwi":
-        # TODO: Add scoring logic for golden kiwi
-        pass
+        score = -3
     elif card == "acerola":
-        # TODO: Add scoring logic for acerola
-        pass
+        score = 2
     elif card == "fruit fly swarm":
-        # TODO: Add scoring logic for fruit fly swarm
-        pass
+        score = -4
     elif card == "deadly nightshade":
-        # TODO: Add scoring logic for deadly nightshade
-        pass
+        score = 3
     elif card == "blood orange":
-        # TODO: Add scoring logic for blood orange
-        pass
+        score = -1
     elif card == "starfruit":
-        # TODO: Add scoring logic for starfruit
-        pass
+        score = 4
     elif card == "peach leaf curl":
-        # TODO: Add scoring logic for peach leaf curl
-        pass
+        score = -2
     elif card == "penicillium fungi":
-        # TODO: Add scoring logic for penicillium fungi
-        pass
+        score = 3
     else:
-        pass
+        score = 0
     return score
 
 def welcome_user():
     welcome_text = '''
 Welcome! In this game, you will be given 6 cards to your hand,
 of which you choose two to be discarded. Each card has different effects that add or subtract to your score.
-But watch out! Some cards have special effects!
 '''
     return welcome_text
 
